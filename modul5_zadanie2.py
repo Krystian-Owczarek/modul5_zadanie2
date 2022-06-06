@@ -4,6 +4,12 @@ class Movies:
         self.premiere_date = premiere_date
         self.genre = genre
         self.views = views
+        
+    def __str__(self):
+        return f'{self.title} {self.premiere_date}'
+
+    def play(self, step=1):
+        self.views += step
 
 
 class TvSeries(Movies):
@@ -11,3 +17,9 @@ class TvSeries(Movies):
         super().__init__(*args, **kwargs)
         self.episode_number = episode_number
         self.season_number = season_number
+
+    def __str__(self):
+        return f'{self.title} S{self.season_number:.2f}E{self.episode_number:.2f}'
+
+    def play(self, step=1):
+        self.views += step
