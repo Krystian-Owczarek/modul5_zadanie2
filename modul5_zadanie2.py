@@ -5,6 +5,8 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 library = []
+list_of_movies = []
+list_of_series = []
 
 class Movies:
     def __init__(self, title, premiere_date, genre, views):
@@ -28,13 +30,9 @@ class Movies:
         self.views += 1
 
     #metoda dodająca wygenerowany tytuł do biblioteki filmów/seriali
-    def add_to_library(self, value):
-        #movie = []
-        #movie.append(self.title)
-        #movie.append(self.premiere_date)
-        #movie.append(self.genre)
-        #movie.append(self.views)
-        library.append(value)
+    def add_to_library(self):
+        library.append(self)
+
 
 class TvSeries(Movies):
     def __init__(self, episode_number, season_number, *args, **kwargs):
@@ -43,7 +41,7 @@ class TvSeries(Movies):
         self.season_number = season_number
 
     def __str__(self):
-        return f'{self.title} S{self.season_number:.2f}E{self.episode_number:.2f}'
+        return f'{self.title} S{self.season_number}E{self.episode_number}'
 
     def __eq__(self, other):
         return (
@@ -59,39 +57,49 @@ class TvSeries(Movies):
         self.views += 1
 
     #metoda dodająca wygenerowany tytuł do biblioteki filmów/seriali
-    def add_to_library(self, value):
-        movie = []
-        movie.append(self.title)
-        movie.append(self.premiere_date)
-        movie.append(self.genre)
-        movie.append(self.views)
-        movie.append(self.episode_number)
-        movie.append(self.season_number)
-        library.append(movie)
-
-
-def get_movies(value):
-    only_movies = []
-    for elem in value:
-        if elem == Movies:
-            only_movies.append(elem)
-    only_movies.sort(key=lambda movies: movies.self.title)
-    print(only_movies)
+    def add_to_library(self):
+            library.append(self)
     
+def get_movies():
+    for elem in library:
+        is_series = isinstance(elem, TvSeries)
+        if is_series == False:
+            list_of_movies.append([elem.title, elem.premiere_date, elem.genre, elem.views])
+    list_of_movies.sort(key=lambda x: x[0])
+    print(list_of_movies)
+
+
+def get_series():
+    for elem in library:
+        is_series = isinstance(elem, TvSeries)
+        if is_series == True:
+            list_of_series.append([elem.title, elem.premiere_date, elem.genre, elem.views])
+    list_of_series.sort(key=lambda x: x[0])
+    print(list_of_series)
+
 
 random_movie = Movies(title='Interstellar', premiere_date='07.11.2014', genre='Science Fiction', views=0)
-random_tv_series = TvSeries(title='Family Guy', premiere_date='31.01.1999', genre='Comedy', views=0, episode_number=1, season_number=1)
+random_movie_2 = Movies(title='A Long Way Down', premiere_date='21.03.2014', genre='Black Comedy', views=0)
+random_movie_3 = Movies(title='Top Gun', premiere_date='12.05.1986', genre='Action', views = 0)
+random_series = TvSeries(title='Family Guy', premiere_date='31.01.1999', genre='Comedy', views=0, episode_number='01', season_number='01')
+random_series_2 = TvSeries(title='The Simpsons', premiere_date='17.12.1989', genre='Comedy', views=0, episode_number='01', season_number='01')
+random_series_3 = TvSeries(title='Black Mirror', premiere_date='04.12.2011', genre='Science Fiction', views=0, episode_number='01', season_number='01')
 
-random_movie.add_to_library(random_movie)
-random_tv_series.add_to_library(random_tv_series)
+print(random_movie)
+print(random_series)
+random_movie.add_to_library()
+random_movie_2.add_to_library()
+random_movie_3.add_to_library()
+random_series.add_to_library()
+random_series_2.add_to_library()
+random_series_3.add_to_library()
+
 print(library)
 
-print(type(random_movie.title))
+get_movies()
+get_series()
 
-get_movies(library)
-
+random_series.play()
+random_movie.play()
 print(random_movie.views)
-
-random_movie.play
-
-print(random_movie.views)
+print(random_series.views)
