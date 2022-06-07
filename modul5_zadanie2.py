@@ -4,6 +4,8 @@ fake = Faker()
 import logging
 logging.basicConfig(level=logging.INFO)
 
+import random
+
 library = []
 list_of_movies = []
 list_of_series = []
@@ -82,6 +84,16 @@ def search(title):
         if title.lower()==elem.title.lower():
             print(elem.title, elem.premiere_date, elem.genre, elem.views)
 
+def generate_views():
+    random_item = random.choice(library)
+    random_item.views = random_item.views + random.randrange(1, 100)
+    print(random_item.title, random_item.premiere_date, random_item.genre, random_item.views)
+
+def generate_views_x_10():
+    for i in range(10):
+        generate_views()
+
+
 
 random_movie = Movies(title='Interstellar', premiere_date='07.11.2014', genre='Science Fiction', views=0)
 random_movie_2 = Movies(title='A Long Way Down', premiere_date='21.03.2014', genre='Black Comedy', views=0)
@@ -110,3 +122,7 @@ print(random_movie.views)
 print(random_series.views)
 
 search('Top GUN')
+
+generate_views_x_10()
+
+search('a long way down')
