@@ -77,6 +77,11 @@ def get_series():
     list_of_series.sort(key=lambda x: x[0])
     print(list_of_series)
 
+def search(title):
+    for elem in library:
+        if title.lower()==elem.title.lower():
+            print(elem.title, elem.premiere_date, elem.genre, elem.views)
+
 
 random_movie = Movies(title='Interstellar', premiere_date='07.11.2014', genre='Science Fiction', views=0)
 random_movie_2 = Movies(title='A Long Way Down', premiere_date='21.03.2014', genre='Black Comedy', views=0)
@@ -103,3 +108,5 @@ random_series.play()
 random_movie.play()
 print(random_movie.views)
 print(random_series.views)
+
+search('Top GUN')
