@@ -6,9 +6,12 @@ logging.basicConfig(level=logging.INFO)
 
 import random
 
+from datetime import date
+
 library = []
 list_of_movies = []
 list_of_series = []
+date = date.today()
 
 class Movies:
     def __init__(self, title, premiere_date, genre, views):
@@ -35,7 +38,6 @@ class Movies:
     def add_to_library(self):
         library.append(self)
 
-
 class TvSeries(Movies):
     def __init__(self, episode_number, season_number, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -61,21 +63,24 @@ class TvSeries(Movies):
     #metoda dodająca wygenerowany tytuł do biblioteki filmów/seriali
     def add_to_library(self):
             library.append(self)
+
+def sort_movies_series(elem, list_1, list_2):
+    is_series = isinstance(elem, TvSeries)
+    if is_series == False:
+        list_1.append([elem.title, elem.premiere_date, elem.genre, elem.views])
+    else:
+        list_2.append([elem.title, elem.premiere_date, elem.genre, elem.views, elem.episode_number, elem.season_number])
     
 def get_movies():
     for elem in library:
-        is_series = isinstance(elem, TvSeries)
-        if is_series == False:
-            list_of_movies.append([elem.title, elem.premiere_date, elem.genre, elem.views])
+        sort_movies_series(elem, list_of_movies, list_of_series)
     list_of_movies.sort(key=lambda x: x[0])
     print(list_of_movies)
 
 
 def get_series():
     for elem in library:
-        is_series = isinstance(elem, TvSeries)
-        if is_series == True:
-            list_of_series.append([elem.title, elem.premiere_date, elem.genre, elem.views])
+        sort_movies_series(elem, list_of_movies, list_of_series)
     list_of_series.sort(key=lambda x: x[0])
     print(list_of_series)
 
@@ -95,74 +100,29 @@ def generate_views_x_10():
         generate_views()
 
 def top_titles(content_type):    
-
+    list_1 = []
+    list_2 = []
 
     if content_type.lower() == 'movie':
-        list_1 = []
 
         for elem in library:
-            is_series = isinstance(elem, TvSeries)
-            if is_series == False:
-                list_1.append(elem)
+            sort_movies_series(elem, list_1, list_2)
 
-        for i in range(3):
+        list_1.sort(key=lambda x:x[3], reverse=True)
+        print(f'{list_1[0]}\n{list_1[1]}\n{list_1[2]}')
 
-            movie = list_1[0]
-
-            for number in list_1:
-                if number.views > movie.views:
-                    movie = number
-            print(f'top watched is {movie.title} with {movie.views} views')
-            
-
-
-    if content_type.lower() == 'tv series':
-        list_2 = []
+    if content_type.lower() == 'series':
 
         for elem in library:
-            is_series = isinstance(elem, TvSeries)
-            if is_series == True:
-                list_2.append(elem)
+            sort_movies_series(elem, list_1, list_2)
 
-        for i in range(15):
-
-            tv_series = list_2[0]
-
-            for number in list_2:
-                if number.views > tv_series.views:
-                    tv_series = number
-            print(f'top watched is {tv_series.title} with {tv_series.views} views')
-            
+        list_2.sort(key=lambda x:x[3], reverse=True)
+        print(f'{list_2[0]}\n{list_2[1]}\n{list_2[2]}')
 
 
 
-random_movie = Movies(title='Interstellar', premiere_date='07.11.2014', genre='Science Fiction', views=0)
-random_movie_2 = Movies(title='A Long Way Down', premiere_date='21.03.2014', genre='Black Comedy', views=0)
-random_movie_3 = Movies(title='Top Gun', premiere_date='12.05.1986', genre='Action', views = 0)
-random_series = TvSeries(title='Family Guy', premiere_date='31.01.1999', genre='Comedy', views=0, episode_number='01', season_number='01')
-random_series_2 = TvSeries(title='The Simpsons', premiere_date='17.12.1989', genre='Comedy', views=0, episode_number='01', season_number='01')
-random_series_3 = TvSeries(title='Black Mirror', premiere_date='04.12.2011', genre='Science Fiction', views=0, episode_number='01', season_number='01')
-
-random_movie.add_to_library()
-random_movie_2.add_to_library()
-random_movie_3.add_to_library()
-random_series.add_to_library()
-random_series_2.add_to_library()
-random_series_3.add_to_library()
-
-generate_views_x_10()
-
-print(random_movie.views)
-print(random_movie_2.views)
-print(random_movie_3.views)
-print(random_series.views)
-print(random_series_2.views)
-print(random_series_3.views)
-
-top_titles('tv series')
-
-'''
 if __name__ == "__main__":
+
 
     print('Biblioteka filmów i seriali')
     random_movie = Movies(title='Interstellar', premiere_date='07.11.2014', genre='Science Fiction', views=0)
@@ -172,8 +132,19 @@ if __name__ == "__main__":
     random_series_2 = TvSeries(title='The Simpsons', premiere_date='17.12.1989', genre='Comedy', views=0, episode_number='01', season_number='01')
     random_series_3 = TvSeries(title='Black Mirror', premiere_date='04.12.2011', genre='Science Fiction', views=0, episode_number='01', season_number='01')
 
+    random_movie.add_to_library()
+    random_movie_2.add_to_library()
+    random_movie_3.add_to_library()
+    random_series.add_to_library()
+    random_series_2.add_to_library()
+    random_series_3.add_to_library()
+
     generate_views_x_10()
 
-    print('Najpopularniejsze filmy i seriale {datetime.now()}')
+    print(f'Najpopularniejsze filmy i seriale {date} \nFilmy:')
 
-'''
+    top_titles('movie')
+
+    print('Seriale:')
+
+    top_titles('series')
