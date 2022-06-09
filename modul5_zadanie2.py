@@ -34,6 +34,10 @@ class Movies:
     def play(self):
         self.views += 1
 
+    def generate_views_x(self, x):
+        for i in range(x):
+            generate_views()
+
     #metoda dodająca wygenerowany tytuł do biblioteki filmów/seriali
     def add_to_library(self):
         library.append(self)
@@ -56,13 +60,6 @@ class TvSeries(Movies):
             self.episode_number == other.episode_number and
             self.season_number == other.season_number
             )
-
-    def play(self):
-        self.views += 1
-
-    #metoda dodająca wygenerowany tytuł do biblioteki filmów/seriali
-    def add_to_library(self):
-            library.append(self)
 
 def sort_movies_series(elem, list_1, list_2):
     is_series = isinstance(elem, TvSeries)
@@ -94,10 +91,6 @@ def generate_views():
     random_number = random.randrange(1, 100)
     for i in range(random_number):
         random_item.play()
-
-def generate_views_x_10():
-    for i in range(10):
-        generate_views()
 
 def top_titles(content_type):    
     list_1 = []
@@ -139,7 +132,7 @@ if __name__ == "__main__":
     random_series_2.add_to_library()
     random_series_3.add_to_library()
 
-    generate_views_x_10()
+    random_series.generate_views_x(1111)
 
     print(f'Najpopularniejsze filmy i seriale {date} \nFilmy:')
 
